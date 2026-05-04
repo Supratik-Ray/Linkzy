@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
+import { connectToDb } from "./db/config.js";
 
 const app = express();
 
@@ -13,4 +14,7 @@ app.get("/", (req: Request, res: Response) => {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`server listening on port ${port}`));
+(async () => {
+  await connectToDb(process.env.MONGODB_URL as string);
+  app.listen(port, () => console.log(`server listening on port ${port}`));
+})();
