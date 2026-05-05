@@ -5,6 +5,7 @@ import { connectToDb } from "./config/db.ts";
 
 //routes
 import authRoutes from "./routes/auth.routes.ts";
+import linkRoutes from "./routes/link.routes.ts";
 import { ErrorMiddleware } from "./middlewares/error.middleware.ts";
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+
+app.use("/links", linkRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Hello world" });
