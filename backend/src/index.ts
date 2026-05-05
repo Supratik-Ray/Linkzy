@@ -5,6 +5,7 @@ import { connectToDb } from "./config/db.ts";
 
 //routes
 import authRoutes from "./routes/auth.routes.ts";
+import { ErrorMiddleware } from "./middlewares/error.middleware.ts";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use("/auth", authRoutes);
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Hello world" });
 });
+
+app.use(ErrorMiddleware);
 
 const port = process.env.PORT || 5000;
 
