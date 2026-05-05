@@ -26,7 +26,9 @@ export async function signup(req: Request, res: Response) {
     const payload = { id: user.id, name: user.name, email: user.email };
 
     //create token
-    const token = jwt.sign(payload.id, process.env.JWT_SECRET!);
+    const token = jwt.sign({ id: payload.id }, process.env.JWT_SECRET!, {
+      expiresIn: "7d",
+    });
 
     return res.status(StatusCodes.CREATED).json({
       message: "successfully signed up!",
@@ -67,7 +69,9 @@ export async function login(req: Request, res: Response) {
   const payload = { id: user.id, name: user.name, email: user.email };
 
   //create token
-  const token = jwt.sign(payload.id, process.env.JWT_SECRET!);
+  const token = jwt.sign({ id: payload.id }, process.env.JWT_SECRET!, {
+    expiresIn: "7d",
+  });
 
   return res.status(StatusCodes.OK).json({
     message: "logged in successfully!",
