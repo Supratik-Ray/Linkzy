@@ -1,5 +1,10 @@
 import type { Request, Response } from "express";
-import { AuthError, BadRequestError, ServerError } from "../errors/index.ts";
+import {
+  AuthError,
+  BadRequestError,
+  NotFoundError,
+  ServerError,
+} from "../errors/index.ts";
 import { generateCode } from "../utils/generateCode.ts";
 import Link from "../models/Link.ts";
 import { StatusCodes } from "http-status-codes";
@@ -33,4 +38,25 @@ export async function shortenLink(req: Request, res: Response) {
   } catch (error) {
     throw new ServerError("failed to shorten link!");
   }
+}
+
+export async function getOriginalLink(req: Request, res: Response) {
+  const { shortCode } = req.params;
+
+  if (!shortCode) {
+    throw new BadRequestError("please provide the shortcode");
+  }
+
+  const link = await Link.findOne({ shortCode });
+
+  if (!link) {
+    throw new BadRequestError("Invalid shortcode");
+  }
+
+  return res.status(StatusCodes.OK).json({
+    success: true,
+    data: {
+      originalUrl: link.originalUrl,
+    },
+  });
 }
