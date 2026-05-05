@@ -1,9 +1,8 @@
 import { StatusCodes } from "http-status-codes";
+import { ApiError } from "./ApiError.ts";
 
-export class AuthError extends Error {
-  statusCode: number;
+export class AuthError extends ApiError {
   constructor(message: string) {
-    super(message);
-    this.statusCode = StatusCodes.UNAUTHORIZED;
+    super(StatusCodes.UNAUTHORIZED, message);
   }
 }

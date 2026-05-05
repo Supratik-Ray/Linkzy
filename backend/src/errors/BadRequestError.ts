@@ -1,9 +1,8 @@
 import { StatusCodes } from "http-status-codes";
+import { ApiError } from "./ApiError.ts";
 
-export class BadRequestError extends Error {
-  statusCode: number;
+export class BadRequestError extends ApiError {
   constructor(message: string) {
-    super(message);
-    this.statusCode = StatusCodes.BAD_REQUEST;
+    super(StatusCodes.BAD_REQUEST, message);
   }
 }

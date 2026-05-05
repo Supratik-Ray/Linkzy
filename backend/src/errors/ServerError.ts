@@ -1,9 +1,8 @@
 import { StatusCodes } from "http-status-codes";
+import { ApiError } from "./ApiError.ts";
 
-export class ServerError extends Error {
-  statusCode: number;
+export class ServerError extends ApiError {
   constructor(message: string) {
-    super(message);
-    this.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    super(StatusCodes.INTERNAL_SERVER_ERROR, message);
   }
 }

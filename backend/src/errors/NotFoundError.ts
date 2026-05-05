@@ -1,9 +1,8 @@
 import { StatusCodes } from "http-status-codes";
+import { ApiError } from "./ApiError.ts";
 
-export class NotFoundError extends Error {
-  statusCode: number;
+export class NotFoundError extends ApiError {
   constructor(message: string) {
-    super(message);
-    this.statusCode = StatusCodes.NOT_FOUND;
+    super(StatusCodes.NOT_FOUND, message);
   }
 }
