@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
+import { AuthError } from "../errors/index.ts";
 
 export function useAuth(req: Request, res: Response, next: NextFunction) {
   //check if authorization header exists and contains bearer token
@@ -9,9 +9,7 @@ export function useAuth(req: Request, res: Response, next: NextFunction) {
     const token = authHeader.split(" ")[1];
 
     if (!token) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "invalid token",
-      });
+      throw new AuthError("Token not found!");
     }
 
     //check if valid token
@@ -20,13 +18,9 @@ export function useAuth(req: Request, res: Response, next: NextFunction) {
       req.user = payload as { id: string };
       next();
     } catch (error) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "invalid token",
-      });
+      throw new AuthError("invalid or expired token!");
     }
   } else {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: "auth header is missing!",
-    });
+    throw new AuthError("Auth header is missing!");
   }
 }
