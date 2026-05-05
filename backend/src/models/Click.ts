@@ -1,18 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
-const linkSchema = new mongoose.Schema(
+const clickSchema = new mongoose.Schema(
   {
-    originalUrl: {
+    country: {
       type: String,
       required: true,
     },
-    shortCode: {
+    device: {
       type: String,
       required: true,
     },
-    user: {
+    link: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Link",
     },
   },
   {
@@ -20,6 +20,6 @@ const linkSchema = new mongoose.Schema(
   },
 );
 
-const Link = mongoose.model("Link", linkSchema);
+const Click = mongoose.model("CLick", clickSchema);
 
-export default Link;
+export default Click;
