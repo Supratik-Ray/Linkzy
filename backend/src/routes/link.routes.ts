@@ -8,6 +8,6 @@ import { requireAuth } from "../middlewares/auth.middleware.ts";
 const router: Router = express.Router();
 
 router.post("/", requireAuth, shortenLink);
-router.get("/:shortcode", getOriginalLink);
+router.get("/:shortCode", getOriginalLink);
 
 export default router;
