@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
-import { connectToDb } from "./db/config.ts";
+import { connectToDb } from "./config/db.ts";
 
 //routes
 import authRoutes from "./routes/auth.routes.ts";

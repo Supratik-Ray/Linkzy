@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import User from "../models/User.ts";
+import { AuthError, ConflictError } from "../errors/index.ts";
 
 export async function signup(req: Request, res: Response) {
   const { name, email, password } = req.body;
@@ -39,9 +40,7 @@ export async function signup(req: Request, res: Response) {
     const error = err as { code: number };
 
     if (error.code === 11000) {
-      return res.status(StatusCodes.CONFLICT).json({
-        message: "User with this email already exists!",
-      });
+      throw new ConflictError("User with this email already exists!");
     }
   }
 }
@@ -53,17 +52,13 @@ export async function login(req: Request, res: Response) {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: "Invalid email or password!",
-    });
+    throw new AuthError("Invalid email or password!");
   }
 
   //check if password match
   const isMatch = await bcrypt.compare(password, user.passwordHash);
   if (!isMatch) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: "Invalid email or password!",
-    });
+    throw new AuthError("Invalid email or password!");
   }
 
   const payload = { id: user.id, name: user.name, email: user.email };
